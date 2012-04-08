@@ -4,10 +4,10 @@ LIB_MAJOR = 0
 LIB_MINOR = 0
 
 SRCS = cfwarray.c	\
+       cfwclass.c	\
        cfwobject.c	\
        cfwstring.c
 
-INCLUDES = ${SRCS:.c=.h} \
-	   cfwclass.h
+INCLUDES = ${SRCS:.c=.h}
 
 include ../buildsys.mk

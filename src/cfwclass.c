@@ -24,22 +24,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __CFWCLASS_H__
-#define __CFWCLASS_H__
+#include "cfwclass.h"
 
-#include <stddef.h>
-#include <stdbool.h>
-#include <stdarg.h>
-
-typedef struct CFWClass {
-	const char *name;
-	size_t size;
-	bool (*ctor)(void*, va_list args);
-	void (*dtor)(void*);
-	bool (*equal)(void*, void*);
-	void* (*copy)(void*);
-} CFWClass;
-
-extern const char* cfw_class_name(CFWClass*);
-
-#endif
+const char*
+cfw_class_name(CFWClass *cls)
+{
+	return cls->name;
+}
