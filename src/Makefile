@@ -1,5 +1,4 @@
 SHARED_LIB = ${LIB_PREFIX}corefw${LIB_SUFFIX}
-STATIC_LIB = libcorefw.a
 LIB_MAJOR = 0
 LIB_MINOR = 0
 
