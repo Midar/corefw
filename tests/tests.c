@@ -26,9 +26,9 @@
 
 #include <stdio.h>
 
-#include "cfwobject.h"
-#include "cfwstring.h"
-#include "cfwarray.h"
+#include "object.h"
+#include "string.h"
+#include "array.h"
 
 int
 main()
