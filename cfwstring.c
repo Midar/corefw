@@ -36,13 +36,23 @@ struct CFWString {
 	size_t len;
 };
 
-static void
-ctor(void *ptr)
+static bool
+ctor(void *ptr, va_list args)
 {
 	CFWString *str = ptr;
+	const char *cstr = va_arg(args, const char*);
 
-	str->cstr = NULL;
-	str->len = 0;
+	if (cstr != NULL) {
+		if ((str->cstr = strdup(cstr)) == NULL)
+			return false;
+
+		str->len = strlen(cstr);
+	} else {
+		str->cstr = NULL;
+		str->len = 0;
+	}
+
+	return true;
 }
 
 static void

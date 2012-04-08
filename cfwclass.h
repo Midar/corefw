@@ -29,11 +29,12 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdarg.h>
 
 typedef struct CFWClass {
 	const char *name;
 	size_t size;
-	void (*ctor)(void*);
+	bool (*ctor)(void*, va_list args);
 	void (*dtor)(void*);
 	bool (*equal)(void*, void*);
 	void* (*copy)(void*);

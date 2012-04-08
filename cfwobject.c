@@ -29,7 +29,7 @@
 #include "cfwobject.h"
 
 void*
-cfw_new(CFWClass *class)
+cfw_new(CFWClass *class, ...)
 {
 	CFWObject *obj;
 
@@ -39,8 +39,17 @@ cfw_new(CFWClass *class)
 	obj->clsptr = class;
 	obj->ref_cnt = 1;
 
-	if (class->ctor != NULL)
-		class->ctor(obj);
+	if (class->ctor != NULL) {
+		va_list args;
+		va_start(args, class);
+
+		if (!class->ctor(obj, args)) {
+			cfw_unref(obj);
+			return NULL;
+		}
+
+		va_end(args);
+	}
 
 	return obj;
 }

@@ -35,13 +35,20 @@ struct CFWArray {
 	size_t size;
 };
 
-static void
-ctor(void *ptr)
+static bool
+ctor(void *ptr, va_list args)
 {
 	CFWArray *array = ptr;
+	void *obj;
 
 	array->data = NULL;
 	array->size = 0;
+
+	while ((obj = va_arg(args, void*)) != NULL)
+		if (!cfw_array_push(array, obj))
+			return false;
+
+	return true;
 }
 
 static void

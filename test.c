@@ -33,30 +33,15 @@
 int
 main()
 {
+	CFWString *s[3];
 	CFWArray *a;
-	CFWString *s;
 	size_t i;
 
-	a = cfw_new(cfw_array);
+	s[0] = cfw_new(cfw_string, "Hallo");
+	s[1] = cfw_new(cfw_string, "Welt");
+	s[2] = cfw_new(cfw_string, "!");
 
-	for (i = 0; i < 3; i++) {
-		s = cfw_new(cfw_string);
-
-		switch (i) {
-		case 0:
-			cfw_string_set(s, "Hello");
-			break;
-		case 1:
-			cfw_string_set(s, "World");
-			break;
-		case 2:
-			cfw_string_set(s, "!");
-			break;
-		}
-
-		cfw_array_push(a, s);
-		cfw_unref(s);
-	}
+	a = cfw_new(cfw_array, s[0], s[1], s[2], NULL);
 
 	for (i = 0; i < cfw_array_size(a); i++)
 		puts(cfw_string_c(cfw_array_get(a, i)));
