@@ -6,6 +6,7 @@ LIB_MINOR = 0
 SRCS = cfwarray.c	\
        cfwclass.c	\
        cfwobject.c	\
+       cfwrange.c	\
        cfwstring.c
 
 INCLUDES = ${SRCS:.c=.h} \
