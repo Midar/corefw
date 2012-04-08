@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2012, Jonathan Schleifer <js@webkeks.org>
  * Copyright (c) 2012, Jos Kuijpers <jos@kuijpersvof.nl>
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -24,21 +24,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __CFWSTRING_H__
-#define __CFWSTRING_H__
-
-#include "cfwclass.h"
 #include "cfwrange.h"
 
-typedef struct CFWString CFWString;
-typedef uint32_t cfw_unichar;
-
-extern CFWClass *cfw_string;
-extern const char* cfw_string_c(CFWString*);
-extern size_t cfw_string_len(CFWString*);
-extern bool cfw_string_set(CFWString*, const char*);
-extern cfw_unichar cfw_string_char(CFWString*, size_t);
-extern size_t cfw_string_find(CFWString*, CFWString*, cfw_range_t);
-extern bool cfw_string_append(CFWString*, CFWString*);
-
-#endif
+cfw_range_t cfw_range_all = { 0, SIZE_MAX };

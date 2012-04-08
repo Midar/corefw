@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2012, Jonathan Schleifer <js@webkeks.org>
+ * Copyright (c) 2012, Jos Kuijpers <jos@kuijpersvof.nl>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -129,6 +130,37 @@ cfw_string_set(CFWString *str, const char *cstr)
 	str->len = strlen(copy);
 
 	return true;
+}
+
+cfw_unichar
+cfw_string_char(CFWString *str, size_t index)
+{
+	if(len > index)
+		return str->data[index];
+	return NULL;
+}
+
+size_t
+cfw_string_find(CFWString *strA, CFWString *strB, cfw_range_t range)
+{
+	char *cstrA = strA->data+range.location;
+	size_t i, max = MIN(range.length+range.location, strB->len);
+	
+	if(strA->len == 0)
+		return 0;
+	
+	if(strA->len-range.location < strB->len)
+		return SIZE_MAX;
+	
+	for(i = range.location;
+		i <= strA->len-strB->len && i <= max;
+		i++)
+	{
+		if(!memcmp(strA->data+i, strB->data, max-i))
+			return i;
+	}
+	
+	return SIZE_MAX;
 }
 
 bool
