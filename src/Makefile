@@ -8,6 +8,7 @@ SRCS = cfwarray.c	\
        cfwobject.c	\
        cfwstring.c
 
-INCLUDES = ${SRCS:.c=.h}
+INCLUDES = ${SRCS:.c=.h} \
+	   corefw.h
 
 include ../buildsys.mk
