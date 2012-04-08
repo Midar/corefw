@@ -32,7 +32,7 @@
 
 struct CFWString {
 	CFWObject obj;
-	char *cstr;
+	char *data;
 	size_t len;
 };
 
@@ -43,12 +43,12 @@ ctor(void *ptr, va_list args)
 	const char *cstr = va_arg(args, const char*);
 
 	if (cstr != NULL) {
-		if ((str->cstr = strdup(cstr)) == NULL)
+		if ((str->data = strdup(cstr)) == NULL)
 			return false;
 
 		str->len = strlen(cstr);
 	} else {
-		str->cstr = NULL;
+		str->data = NULL;
 		str->len = 0;
 	}
 
@@ -60,8 +60,8 @@ dtor(void *ptr)
 {
 	CFWString *str = ptr;
 
-	if (str->cstr != NULL)
-		free(str->cstr);
+	if (str->data != NULL)
+		free(str->data);
 }
 
 static bool
@@ -79,7 +79,7 @@ equal(void *ptr1, void *ptr2)
 	if (str1->len != str2->len)
 		return false;
 
-	return !strcmp(str1->cstr, str2->cstr);
+	return !memcmp(str1->data, str2->data, str1->len);
 }
 
 static void*
@@ -91,21 +91,21 @@ copy(void *ptr)
 	if ((new = cfw_new(cfw_string)) == NULL)
 		return NULL;
 
-	if ((new->cstr = malloc(str->len + 1)) == NULL) {
+	if ((new->data = malloc(str->len + 1)) == NULL) {
 		cfw_unref(new);
 		return NULL;
 	}
 	new->len = str->len;
 
-	memcpy(new->cstr, str->cstr, str->len + 1);
+	memcpy(new->data, str->data, str->len + 1);
 
 	return new;
 }
 
 const char*
-cfw_string_c(CFWString *string)
+cfw_string_c(CFWString *str)
 {
-	return string->cstr;
+	return str->data;
 }
 
 size_t
@@ -122,10 +122,10 @@ cfw_string_set(CFWString *str, const char *cstr)
 	if ((copy = strdup(cstr)) == NULL)
 		return false;
 
-	if (str->cstr != NULL)
-		free(str->cstr);
+	if (str->data != NULL)
+		free(str->data);
 
-	str->cstr = copy;
+	str->data = copy;
 	str->len = strlen(copy);
 
 	return true;
@@ -136,13 +136,13 @@ cfw_string_append(CFWString *str, CFWString *append)
 {
 	char *new;
 
-	if ((new = realloc(str->cstr, str->len + append->len + 1)) == NULL)
+	if ((new = realloc(str->data, str->len + append->len + 1)) == NULL)
 		return false;
 
-	memcpy(new + str->len, append->cstr, append->len);
+	memcpy(new + str->len, append->data, append->len);
 	new[str->len + append->len] = 0;
 
-	str->cstr = new;
+	str->data = new;
 	str->len += append->len;
 
 	return true;
