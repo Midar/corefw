@@ -1,0 +1,16 @@
+*.a
+*.dll
+*.dylib
+*.o
+*.orig
+*.so
+*~
+.deps
+aclocal.m4
+autom4te.cache
+buildsys.mk
+config.log
+config.status
+configure
+tests/tests
+tests/tests.exe
