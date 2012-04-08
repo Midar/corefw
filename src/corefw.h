@@ -1,5 +1,5 @@
-#ifndef __COREFW_H__
-#define __COREFW_H__
+#ifndef __COREFW_COREFW_H__
+#define __COREFW_COREFW_H__
 
 #include "class.h"
 #include "object.h"

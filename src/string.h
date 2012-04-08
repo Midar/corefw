@@ -24,8 +24,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __CFWSTRING_H__
-#define __CFWSTRING_H__
+#ifndef __COREFW_STRING_H__
+#define __COREFW_STRING_H__
 
 #include "class.h"
 

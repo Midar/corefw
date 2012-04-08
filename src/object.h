@@ -24,8 +24,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __CFWOBJECT_H__
-#define __CFWOBJECT_H__
+#ifndef __COREFW_OBJECT_H__
+#define __COREFW_OBJECT_H__
 
 #include "class.h"
 

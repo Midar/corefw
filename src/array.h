@@ -24,8 +24,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __CFWARRAY_H__
-#define __CFWARRAY_H__
+#ifndef __COREFW_ARRAY_H__
+#define __COREFW_ARRAY_H__
 
 #include "class.h"
 

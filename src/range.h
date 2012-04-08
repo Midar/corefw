@@ -24,8 +24,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __CFWRANGE_H__
-#define __CFW_RANGE_H__
+#ifndef __COREFW_RANGE_H__
+#define __COREFW_RANGE_H__
 
 typedef struct cfw_range_t {
 	size_t start;

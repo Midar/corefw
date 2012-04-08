@@ -24,8 +24,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __CFWCLASS_H__
-#define __CFWCLASS_H__
+#ifndef __COREFW_CLASS_H__
+#define __COREFW_CLASS_H__
 
 #include <stddef.h>
 #include <stdbool.h>
