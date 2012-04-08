@@ -131,6 +131,23 @@ cfw_string_set(CFWString *str, const char *cstr)
 	return true;
 }
 
+bool
+cfw_string_append(CFWString *str, CFWString *append)
+{
+	char *new;
+
+	if ((new = realloc(str->cstr, str->len + append->len + 1)) == NULL)
+		return false;
+
+	memcpy(new + str->len, append->cstr, append->len);
+	new[str->len + append->len] = 0;
+
+	str->cstr = new;
+	str->len += append->len;
+
+	return true;
+}
+
 static CFWClass class = {
 	.name = "CFWString",
 	.size = sizeof(CFWString),

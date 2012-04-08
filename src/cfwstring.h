@@ -34,5 +34,6 @@ extern CFWClass *cfw_string;
 extern const char* cfw_string_c(CFWString*);
 extern size_t cfw_string_len(CFWString*);
 extern bool cfw_string_set(CFWString*, const char*);
+extern bool cfw_string_append(CFWString*, CFWString*);
 
 #endif
