@@ -27,8 +27,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "cfwobject.h"
-#include "cfwarray.h"
+#include "object.h"
+#include "array.h"
 
 struct CFWArray {
 	CFWObject obj;

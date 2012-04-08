@@ -3,11 +3,11 @@ STATIC_LIB = libcorefw.a
 LIB_MAJOR = 0
 LIB_MINOR = 0
 
-SRCS = cfwarray.c	\
-       cfwclass.c	\
-       cfwobject.c	\
-       cfwrange.c	\
-       cfwstring.c
+SRCS = array.c	\
+       class.c	\
+       object.c	\
+       range.c	\
+       string.c
 
 INCLUDES = ${SRCS:.c=.h} \
 	   corefw.h

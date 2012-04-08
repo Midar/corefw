@@ -27,8 +27,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "cfwobject.h"
-#include "cfwstring.h"
+#include "object.h"
+#include "string.h"
 
 struct CFWString {
 	CFWObject obj;

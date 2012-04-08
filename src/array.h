@@ -24,90 +24,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdlib.h>
+#ifndef __CFWARRAY_H__
+#define __CFWARRAY_H__
 
-#include "cfwobject.h"
+#include "class.h"
 
-void*
-cfw_new(CFWClass *class, ...)
-{
-	CFWObject *obj;
+typedef struct CFWArray CFWArray;
+extern CFWClass *cfw_array;
+extern size_t cfw_array_size(CFWArray*);
+extern void* cfw_array_get(CFWArray*, size_t);
+extern bool cfw_array_set(CFWArray*, size_t, void*);
+extern bool cfw_array_push(CFWArray*, void*);
+extern void* cfw_array_last(CFWArray*);
+extern bool cfw_array_pop(CFWArray*);
+extern bool cfw_array_contains(CFWArray*, void*);
+extern bool cfw_array_contains_ptr(CFWArray*, void*);
+extern size_t cfw_array_find(CFWArray*, void*);
+extern size_t cfw_array_find_ptr(CFWArray*, void*);
 
-	if ((obj = malloc(class->size)) == NULL)
-		return NULL;
-
-	obj->cls = class;
-	obj->ref_cnt = 1;
-
-	if (class->ctor != NULL) {
-		va_list args;
-		va_start(args, class);
-
-		if (!class->ctor(obj, args)) {
-			cfw_unref(obj);
-			return NULL;
-		}
-
-		va_end(args);
-	}
-
-	return obj;
-}
-
-void*
-cfw_ref(void *ptr)
-{
-	CFWObject *obj = ptr;
-
-	obj->ref_cnt++;
-
-	return obj;
-}
-
-void
-cfw_unref(void *ptr)
-{
-	CFWObject *obj = ptr;
-
-	if (--obj->ref_cnt == 0)
-		cfw_free(obj);
-}
-
-void
-cfw_free(void *ptr)
-{
-	CFWObject *obj = ptr;
-
-	if (obj->cls->dtor != NULL)
-		obj->cls->dtor(obj);
-
-	free(obj);
-}
-
-bool
-cfw_equal(void *ptr1, void *ptr2)
-{
-	CFWObject *obj1 = ptr1, *obj2 = ptr2;
-
-	if (obj1->cls->equal != NULL) {
-		return obj1->cls->equal(obj1, obj2);
-	} else
-		return (obj1 == obj2);
-}
-
-void*
-cfw_copy(void *ptr)
-{
-	CFWObject *obj = ptr;
-
-	if (obj->cls->copy != NULL)
-		return obj->cls->copy(obj);
-	else
-		return NULL;
-}
-
-static CFWClass class = {
-	.name = "CFWObject",
-	.size = sizeof(CFWObject),
-};
-CFWClass *cfw_object = &class;
+#endif

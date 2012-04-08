@@ -24,17 +24,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stddef.h>
-#include <stdint.h>
+#ifndef __CFWOBJECT_H__
+#define __CFWOBJECT_H__
 
-#include "cfwrange.h"
+#include "class.h"
 
-cfw_range_t cfw_range_all = { 0, SIZE_MAX };
+typedef struct CFWObject {
+	CFWClass *cls;
+	int ref_cnt;
+} CFWObject;
 
-cfw_range_t
-cfw_range(size_t start, size_t length)
-{
-	cfw_range_t range = { start, length };
+extern CFWClass *cfw_object;
+extern void* cfw_new(CFWClass*, ...);
+extern void* cfw_ref(void*);
+extern void cfw_unref(void*);
+extern void cfw_free(void*);
+extern bool cfw_equal(void*, void*);
+extern void* cfw_copy(void*);
 
-	return range;
-}
+#endif
