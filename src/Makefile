@@ -4,7 +4,11 @@ LIB_MAJOR = 0
 LIB_MINOR = 0
 
 SRCS = cfwarray.c	\
+       cfwclass.c	\
        cfwobject.c	\
        cfwstring.c
+
+INCLUDES = ${SRCS:.c=.h} \
+	   corefw.h
 
 include ../buildsys.mk

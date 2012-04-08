@@ -36,7 +36,7 @@ cfw_new(CFWClass *class, ...)
 	if ((obj = malloc(class->size)) == NULL)
 		return NULL;
 
-	obj->clsptr = class;
+	obj->cls = class;
 	obj->ref_cnt = 1;
 
 	if (class->ctor != NULL) {
@@ -78,8 +78,8 @@ cfw_free(void *ptr)
 {
 	CFWObject *obj = ptr;
 
-	if (obj->clsptr->dtor != NULL)
-		obj->clsptr->dtor(obj);
+	if (obj->cls->dtor != NULL)
+		obj->cls->dtor(obj);
 
 	free(obj);
 }
@@ -89,8 +89,8 @@ cfw_equal(void *ptr1, void *ptr2)
 {
 	CFWObject *obj1 = ptr1, *obj2 = ptr2;
 
-	if (obj1->clsptr->equal != NULL) {
-		return obj1->clsptr->equal(obj1, obj2);
+	if (obj1->cls->equal != NULL) {
+		return obj1->cls->equal(obj1, obj2);
 	} else
 		return (obj1 == obj2);
 }
@@ -100,8 +100,8 @@ cfw_copy(void *ptr)
 {
 	CFWObject *obj = ptr;
 
-	if (obj->clsptr->copy != NULL)
-		return obj->clsptr->copy(obj);
+	if (obj->cls->copy != NULL)
+		return obj->cls->copy(obj);
 	else
 		return NULL;
 }

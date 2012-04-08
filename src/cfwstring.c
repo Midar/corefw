@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2012, Jonathan Schleifer <js@webkeks.org>
+ * Copyright (c) 2012, Jos Kuijpers <jos@kuijpersvof.nl>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +33,7 @@
 
 struct CFWString {
 	CFWObject obj;
-	char *cstr;
+	char *data;
 	size_t len;
 };
 
@@ -43,12 +44,12 @@ ctor(void *ptr, va_list args)
 	const char *cstr = va_arg(args, const char*);
 
 	if (cstr != NULL) {
-		if ((str->cstr = strdup(cstr)) == NULL)
+		if ((str->data = strdup(cstr)) == NULL)
 			return false;
 
 		str->len = strlen(cstr);
 	} else {
-		str->cstr = NULL;
+		str->data = NULL;
 		str->len = 0;
 	}
 
@@ -60,8 +61,8 @@ dtor(void *ptr)
 {
 	CFWString *str = ptr;
 
-	if (str->cstr != NULL)
-		free(str->cstr);
+	if (str->data != NULL)
+		free(str->data);
 }
 
 static bool
@@ -70,7 +71,7 @@ equal(void *ptr1, void *ptr2)
 	CFWObject *obj2 = ptr2;
 	CFWString *str1, *str2;
 
-	if (obj2->clsptr != cfw_string)
+	if (obj2->cls != cfw_string)
 		return false;
 
 	str1 = ptr1;
@@ -79,7 +80,7 @@ equal(void *ptr1, void *ptr2)
 	if (str1->len != str2->len)
 		return false;
 
-	return !strcmp(str1->cstr, str2->cstr);
+	return !memcmp(str1->data, str2->data, str1->len);
 }
 
 static void*
@@ -91,21 +92,21 @@ copy(void *ptr)
 	if ((new = cfw_new(cfw_string)) == NULL)
 		return NULL;
 
-	if ((new->cstr = malloc(str->len + 1)) == NULL) {
+	if ((new->data = malloc(str->len + 1)) == NULL) {
 		cfw_unref(new);
 		return NULL;
 	}
 	new->len = str->len;
 
-	memcpy(new->cstr, str->cstr, str->len + 1);
+	memcpy(new->data, str->data, str->len + 1);
 
 	return new;
 }
 
 const char*
-cfw_string_c(CFWString *string)
+cfw_string_c(CFWString *str)
 {
-	return string->cstr;
+	return str->data;
 }
 
 size_t
@@ -122,10 +123,10 @@ cfw_string_set(CFWString *str, const char *cstr)
 	if ((copy = strdup(cstr)) == NULL)
 		return false;
 
-	if (str->cstr != NULL)
-		free(str->cstr);
+	if (str->data != NULL)
+		free(str->data);
 
-	str->cstr = copy;
+	str->data = copy;
 	str->len = strlen(copy);
 
 	return true;
@@ -135,14 +136,14 @@ cfw_unichar
 cfw_string_char(CFWString *str, size_t index)
 {
 	if(len > index)
-		return str->cstr[index];
+		return str->data[index];
 	return NULL;
 }
 
 size_t
 cfw_string_find(CFWString *strA, CFWString *strB, cfw_range_t range)
 {
-	char *cstrA = strA->cstr+range.location;
+	char *cstrA = strA->data+range.location;
 	size_t i, max = MIN(range.length+range.location, strB->len);
 	
 	if(strA->len == 0)
@@ -155,11 +156,28 @@ cfw_string_find(CFWString *strA, CFWString *strB, cfw_range_t range)
 		i <= strA->len-strB->len && i <= max;
 		i++)
 	{
-		if(!memcmp(strA->cstr+i, strB->cstr, max-i))
+		if(!memcmp(strA->data+i, strB->data, max-i))
 			return i;
 	}
 	
 	return SIZE_MAX;
+}
+
+bool
+cfw_string_append(CFWString *str, CFWString *append)
+{
+	char *new;
+
+	if ((new = realloc(str->data, str->len + append->len + 1)) == NULL)
+		return false;
+
+	memcpy(new + str->len, append->data, append->len);
+	new[str->len + append->len] = 0;
+
+	str->data = new;
+	str->len += append->len;
+
+	return true;
 }
 
 static CFWClass class = {

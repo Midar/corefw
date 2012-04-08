@@ -38,13 +38,25 @@ main()
 	size_t i;
 
 	s[0] = cfw_new(cfw_string, "Hallo");
-	s[1] = cfw_new(cfw_string, "Welt");
+	s[1] = cfw_new(cfw_string, " Welt");
 	s[2] = cfw_new(cfw_string, "!");
 
 	a = cfw_new(cfw_array, s[0], s[1], s[2], NULL);
 
+	cfw_unref(s[0]);
+	cfw_unref(s[1]);
+	cfw_unref(s[2]);
+
+	s[0] = cfw_new(cfw_string, NULL);
+
 	for (i = 0; i < cfw_array_size(a); i++)
-		puts(cfw_string_c(cfw_array_get(a, i)));
+		cfw_string_append(s[0], cfw_array_get(a, i));
+
+	cfw_unref(a);
+
+	puts(cfw_string_c(s[0]));
+
+	cfw_unref(s[0]);
 
 	return 0;
 }

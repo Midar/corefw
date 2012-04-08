@@ -25,6 +25,7 @@
  */
 
 #include <stdlib.h>
+#include <stdint.h>
 
 #include "cfwobject.h"
 #include "cfwarray.h"
@@ -71,7 +72,7 @@ equal(void *ptr1, void *ptr2)
 	CFWArray *array1, *array2;
 	size_t i;
 
-	if (obj2->clsptr != cfw_array)
+	if (obj2->cls != cfw_array)
 		return false;
 
 	array1 = ptr1;
@@ -201,6 +202,54 @@ cfw_array_pop(CFWArray *array)
 	array->size--;
 
 	return true;
+}
+
+bool
+cfw_array_contains(CFWArray *array, void *ptr)
+{
+	size_t i;
+
+	for (i = 0; i < array->size; i++)
+		if (cfw_equal(array->data[i], ptr))
+			return true;
+
+	return false;
+}
+
+bool
+cfw_array_contains_ptr(CFWArray *array, void *ptr)
+{
+	size_t i;
+
+	for (i = 0; i < array->size; i++)
+		if (array->data[i] == ptr)
+			return true;
+
+	return false;
+}
+
+size_t
+cfw_array_find(CFWArray *array, void *ptr)
+{
+	size_t i;
+
+	for (i = 0; i < array->size; i++)
+		if (cfw_equal(array->data[i], ptr))
+			return i;
+
+	return SIZE_MAX;
+}
+
+size_t
+cfw_array_find_ptr(CFWArray *array, void *ptr)
+{
+	size_t i;
+
+	for (i = 0; i < array->size; i++)
+		if (array->data[i] == ptr)
+			return i;
+
+	return SIZE_MAX;
 }
 
 static CFWClass class = {

@@ -37,5 +37,9 @@ extern bool cfw_array_set(CFWArray*, size_t, void*);
 extern bool cfw_array_push(CFWArray*, void*);
 extern void* cfw_array_last(CFWArray*);
 extern bool cfw_array_pop(CFWArray*);
+extern bool cfw_array_contains(CFWArray*, void*);
+extern bool cfw_array_contains_ptr(CFWArray*, void*);
+extern size_t cfw_array_find(CFWArray*, void*);
+extern size_t cfw_array_find_ptr(CFWArray*, void*);
 
 #endif

@@ -24,22 +24,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __CFWOBJECT_H__
-#define __CFWOBJECT_H__
-
 #include "cfwclass.h"
 
-typedef struct CFWObject {
-	CFWClass *cls;
-	int ref_cnt;
-} CFWObject;
-
-extern CFWClass *cfw_object;
-extern void* cfw_new(CFWClass*, ...);
-extern void* cfw_ref(void*);
-extern void cfw_unref(void*);
-extern void cfw_free(void*);
-extern bool cfw_equal(void*, void*);
-extern void* cfw_copy(void*);
-
-#endif
+const char*
+cfw_class_name(CFWClass *cls)
+{
+	return cls->name;
+}

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2012, Jonathan Schleifer <js@webkeks.org>
- * All rights reserved.
+ * Copyright (c) 2012, Jos Kuijpers <jos@kuijpersvof.nl>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,5 +39,6 @@ extern size_t cfw_string_len(CFWString*);
 extern bool cfw_string_set(CFWString*, const char*);
 extern cfw_unichar cfw_string_char(CFWString*, size_t);
 extern size_t cfw_string_find(CFWString*, CFWString*, cfw_range_t);
+extern bool cfw_string_append(CFWString*, CFWString*);
 
 #endif

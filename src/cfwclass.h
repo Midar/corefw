@@ -40,4 +40,6 @@ typedef struct CFWClass {
 	void* (*copy)(void*);
 } CFWClass;
 
+extern const char* cfw_class_name(CFWClass*);
+
 #endif
