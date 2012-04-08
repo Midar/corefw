@@ -72,7 +72,7 @@ equal(void *ptr1, void *ptr2)
 	CFWArray *array1, *array2;
 	size_t i;
 
-	if (obj2->clsptr != cfw_array)
+	if (obj2->cls != cfw_array)
 		return false;
 
 	array1 = ptr1;

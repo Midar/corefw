@@ -30,7 +30,7 @@
 #include "cfwclass.h"
 
 typedef struct CFWObject {
-	CFWClass *clsptr;
+	CFWClass *cls;
 	int ref_cnt;
 } CFWObject;
 

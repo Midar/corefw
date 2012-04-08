@@ -70,7 +70,7 @@ equal(void *ptr1, void *ptr2)
 	CFWObject *obj2 = ptr2;
 	CFWString *str1, *str2;
 
-	if (obj2->clsptr != cfw_string)
+	if (obj2->cls != cfw_string)
 		return false;
 
 	str1 = ptr1;
