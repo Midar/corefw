@@ -25,6 +25,7 @@
  */
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 
 #include "object.h"
@@ -146,6 +147,28 @@ cfw_string_append(CFWString *str, CFWString *append)
 	str->len += append->len;
 
 	return true;
+}
+
+size_t
+cfw_string_find(CFWString *str, CFWString *substr, cfw_range_t range)
+{
+	size_t i;
+
+	if (range.start > str->len)
+		return SIZE_MAX;
+
+	if (range.length == SIZE_MAX)
+		range.length = str->len - range.start;
+
+	if (range.start + range.length > str->len || substr->len > range.length)
+		return SIZE_MAX;
+
+	for (i = range.start; i <= range.start + range.length - substr->len;
+	    i++)
+		if (!memcmp(str->data + i, substr->data, substr->len))
+			return i;
+
+	return SIZE_MAX;
 }
 
 static CFWClass class = {

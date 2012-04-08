@@ -56,6 +56,10 @@ main()
 
 	puts(cfw_string_c(s[0]));
 
+	s[1] = cfw_new(cfw_string, "ll");
+	printf("%zd\n", cfw_string_find(s[0], s[1], cfw_range_all));
+	cfw_unref(s[1]);
+
 	cfw_unref(s[0]);
 
 	return 0;
