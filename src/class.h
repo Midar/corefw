@@ -29,6 +29,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdarg.h>
 
 typedef struct CFWClass {
@@ -37,6 +38,7 @@ typedef struct CFWClass {
 	bool (*ctor)(void*, va_list args);
 	void (*dtor)(void*);
 	bool (*equal)(void*, void*);
+	uint32_t (*hash)(void*);
 	void* (*copy)(void*);
 } CFWClass;
 

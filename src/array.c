@@ -29,6 +29,7 @@
 
 #include "object.h"
 #include "array.h"
+#include "hash.h"
 
 struct CFWArray {
 	CFWObject obj;
@@ -86,6 +87,23 @@ equal(void *ptr1, void *ptr2)
 			return false;
 
 	return true;
+}
+
+static uint32_t
+hash(void *ptr)
+{
+	CFWArray *array = ptr;
+	size_t i;
+	uint32_t hash;
+
+	CFW_HASH_INIT(hash);
+
+	for (i = 0; i < array->size; i++)
+		CFW_HASH_ADD_HASH(hash, cfw_hash(array->data[i]));
+
+	CFW_HASH_FINALIZE(hash);
+
+	return hash;
 }
 
 static void*
@@ -258,6 +276,7 @@ static CFWClass class = {
 	.ctor = ctor,
 	.dtor = dtor,
 	.equal = equal,
+	.hash = hash,
 	.copy = copy
 };
 CFWClass *cfw_array = &class;

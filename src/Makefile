@@ -8,7 +8,8 @@ SRCS = array.c	\
        range.c	\
        string.c
 
-INCLUDES = ${SRCS:.c=.h} \
-	   corefw.h
+INCLUDES = ${SRCS:.c=.h}	\
+	   corefw.h		\
+	   hash.h
 
 include ../buildsys.mk

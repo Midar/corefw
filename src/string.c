@@ -30,6 +30,7 @@
 
 #include "object.h"
 #include "string.h"
+#include "hash.h"
 
 struct CFWString {
 	CFWObject obj;
@@ -81,6 +82,23 @@ equal(void *ptr1, void *ptr2)
 		return false;
 
 	return !memcmp(str1->data, str2->data, str1->len);
+}
+
+static uint32_t
+hash(void *ptr)
+{
+	CFWString *str = ptr;
+	size_t i;
+	uint32_t hash;
+
+	CFW_HASH_INIT(hash);
+
+	for (i = 0; i < str->len; i++)
+		CFW_HASH_ADD(hash, str->data[i]);
+
+	CFW_HASH_FINALIZE(hash);
+
+	return hash;
 }
 
 static void*
@@ -177,6 +195,7 @@ static CFWClass class = {
 	.ctor = ctor,
 	.dtor = dtor,
 	.equal = equal,
+	.hash = hash,
 	.copy = copy
 };
 CFWClass *cfw_string = &class;

@@ -40,6 +40,7 @@ extern void* cfw_ref(void*);
 extern void cfw_unref(void*);
 extern void cfw_free(void*);
 extern bool cfw_equal(void*, void*);
+extern uint32_t cfw_hash(void*);
 extern void* cfw_copy(void*);
 
 #endif

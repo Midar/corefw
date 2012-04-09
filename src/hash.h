@@ -24,101 +24,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdlib.h>
+#ifndef __COREFW_HASH_H__
+#define __COREFW_HASH_H__
 
-#include "object.h"
-
-void*
-cfw_new(CFWClass *class, ...)
-{
-	CFWObject *obj;
-
-	if ((obj = malloc(class->size)) == NULL)
-		return NULL;
-
-	obj->cls = class;
-	obj->ref_cnt = 1;
-
-	if (class->ctor != NULL) {
-		va_list args;
-		va_start(args, class);
-
-		if (!class->ctor(obj, args)) {
-			cfw_unref(obj);
-			return NULL;
-		}
-
-		va_end(args);
+#define CFW_HASH_INIT(hash) hash = 0
+#define CFW_HASH_ADD(hash, byte)	\
+	{				\
+		hash += (uint8_t)byte;	\
+		hash += (hash << 10);	\
+		hash ^= (hash >> 6);	\
+	}
+#define CFW_HASH_FINALIZE(hash)		\
+	{				\
+		hash += (hash << 3);	\
+		hash ^= (hash >> 11);	\
+		hash += (hash << 15);	\
+	}
+#define CFW_HASH_ADD_HASH(hash, other_)				\
+	{							\
+		uint32_t other = other_;			\
+		CFW_HASH_ADD(hash, (other >> 24) & 0xFF);	\
+		CFW_HASH_ADD(hash, (other >> 16) & 0xFF);	\
+		CFW_HASH_ADD(hash, (other >>  8) & 0xFF);	\
+		CFW_HASH_ADD(hash, other & 0xFF);		\
 	}
 
-	return obj;
-}
-
-void*
-cfw_ref(void *ptr)
-{
-	CFWObject *obj = ptr;
-
-	obj->ref_cnt++;
-
-	return obj;
-}
-
-void
-cfw_unref(void *ptr)
-{
-	CFWObject *obj = ptr;
-
-	if (--obj->ref_cnt == 0)
-		cfw_free(obj);
-}
-
-void
-cfw_free(void *ptr)
-{
-	CFWObject *obj = ptr;
-
-	if (obj->cls->dtor != NULL)
-		obj->cls->dtor(obj);
-
-	free(obj);
-}
-
-bool
-cfw_equal(void *ptr1, void *ptr2)
-{
-	CFWObject *obj1 = ptr1, *obj2 = ptr2;
-
-	if (obj1->cls->equal != NULL) {
-		return obj1->cls->equal(obj1, obj2);
-	} else
-		return (obj1 == obj2);
-}
-
-uint32_t
-cfw_hash(void *ptr)
-{
-	CFWObject *obj = ptr;
-
-	if (obj->cls->hash != NULL)
-		return obj->cls->hash(obj);
-
-	return (uint32_t)(uintptr_t)ptr;
-}
-
-void*
-cfw_copy(void *ptr)
-{
-	CFWObject *obj = ptr;
-
-	if (obj->cls->copy != NULL)
-		return obj->cls->copy(obj);
-
-	return NULL;
-}
-
-static CFWClass class = {
-	.name = "CFWObject",
-	.size = sizeof(CFWObject),
-};
-CFWClass *cfw_object = &class;
+#endif
