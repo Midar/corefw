@@ -45,6 +45,7 @@ ctor(void *ptr, va_list args)
 	const char *cstr = va_arg(args, const char*);
 
 	if (cstr != NULL) {
+		str->data = NULL;
 		if ((str->data = strdup(cstr)) == NULL)
 			return false;
 
