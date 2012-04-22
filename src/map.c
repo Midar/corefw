@@ -355,6 +355,34 @@ cfw_map_set(CFWMap *map, void *key, void *obj)
 	return true;
 }
 
+void
+cfw_map_iter(CFWMap *map, cfw_map_iter_t *iter)
+{
+	iter->key = NULL;
+	iter->obj = NULL;
+	iter->_map = map;
+	iter->_pos = 0;
+}
+
+void
+cfw_map_iter_next(cfw_map_iter_t *iter)
+{
+	CFWMap *map = iter->_map;
+
+	for (; iter->_pos < map->size &&
+	    (map->data[iter->_pos] == NULL ||
+	    map->data[iter->_pos] == &deleted); iter->_pos++);
+
+	if (iter->_pos < map->size) {
+		iter->key = map->data[iter->_pos]->key;
+		iter->obj = map->data[iter->_pos]->obj;
+		iter->_pos++;
+	} else {
+		iter->key = NULL;
+		iter->obj = NULL;
+	}
+}
+
 static CFWClass class = {
 	.name = "CFWMap",
 	.size = sizeof(CFWMap),

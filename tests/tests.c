@@ -31,6 +31,29 @@
 #include "array.h"
 #include "map.h"
 
+void
+print_map(CFWMap *map)
+{
+	cfw_map_iter_t iter;
+
+	cfw_map_iter(map, &iter);
+	cfw_map_iter_next(&iter);
+
+	fputs("{\n", stdout);
+
+	while (iter.key != NULL) {
+		if (iter.obj != NULL)
+			printf("\t%s = %s\n", cfw_string_c(iter.key),
+			    cfw_string_c(iter.obj));
+		else
+			printf("\t%s = NULL\n", cfw_string_c(iter.key));
+
+		cfw_map_iter_next(&iter);
+	}
+
+	fputs("}\n", stdout);
+}
+
 int
 main()
 {
@@ -68,19 +91,18 @@ main()
 	s[1] = cfw_new(cfw_string, "Welt!");
 
 	m = cfw_new(cfw_map, s[0], s[1], NULL);
-
 	cfw_unref(s[1]);
 
-	puts(cfw_string_c(cfw_map_get(m, s[0])));
+	print_map(m);
 
 	s[1] = cfw_new(cfw_string, "Test");
 	cfw_map_set(m, s[0], s[1]);
 	cfw_unref(s[1]);
 
-	puts(cfw_string_c(cfw_map_get(m, s[0])));
+	print_map(m);
 
 	cfw_map_set(m, s[0], NULL);
-	printf("%p\n", cfw_map_get(m, s[0]));
+	print_map(m);
 
 	cfw_unref(s[0]);
 	cfw_unref(m);
