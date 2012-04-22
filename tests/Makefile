@@ -1,4 +1,4 @@
-PROG = tests
+PROG_NOINST = tests
 SRCS = tests.c
 
 include ../buildsys.mk
