@@ -24,24 +24,86 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __COREFW_OBJECT_H__
-#define __COREFW_OBJECT_H__
+#include <stdlib.h>
+#include <assert.h>
 
-#include "class.h"
+#include "object.h"
+#include "refpool.h"
+#include "array.h"
 
-typedef struct CFWObject {
-	CFWClass *cls;
-	int ref_cnt;
-} CFWObject;
+struct CFWRefPool {
+	CFWObject obj;
+	void **data;
+	size_t size;
+	CFWRefPool *prev, *next;
+};
 
-extern CFWClass *cfw_object;
-extern void* cfw_new(CFWClass*, ...);
-extern void* cfw_new_p(CFWClass*, ...);
-extern void* cfw_ref(void*);
-extern void cfw_unref(void*);
-extern void cfw_free(void*);
-extern bool cfw_equal(void*, void*);
-extern uint32_t cfw_hash(void*);
-extern void* cfw_copy(void*);
+static CFWRefPool *top;
 
-#endif
+static bool
+ctor(void *ptr, va_list args)
+{
+	CFWRefPool *pool = ptr;
+
+	pool->data = NULL;
+	pool->size = 0;
+
+	if (top != NULL) {
+		pool->prev = top;
+		top->next = pool;
+	} else
+		pool->prev = NULL;
+	pool->next = NULL;
+
+	top = pool;
+
+	return true;
+}
+
+static void
+dtor(void *ptr)
+{
+	CFWRefPool *pool = ptr;
+	size_t i;
+
+	if (pool->next != NULL)
+		cfw_unref(pool->next);
+
+	for (i = 0; i < pool->size; i++)
+		cfw_unref(pool->data[i]);
+
+	if (pool->data != NULL)
+		free(pool->data);
+
+	top = pool->prev;
+}
+
+bool
+cfw_refpool_add(void *ptr)
+{
+	void **ndata;
+
+	assert(top != NULL);
+
+	if (top->data != NULL)
+		ndata = realloc(top->data, (top->size + 1) * sizeof(void*));
+	else
+		ndata = malloc((top->size + 1) * sizeof(void*));
+
+	if (ndata == NULL)
+		return false;
+
+	ndata[top->size++] = ptr;
+
+	top->data = ndata;
+
+	return true;
+}
+
+static CFWClass class = {
+	.name = "CFWRefPool",
+	.size = sizeof(CFWRefPool),
+	.ctor = ctor,
+	.dtor = dtor
+};
+CFWClass *cfw_refpool = &class;

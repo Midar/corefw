@@ -27,11 +27,12 @@
 #include <stdio.h>
 
 #include "object.h"
+#include "refpool.h"
 #include "string.h"
 #include "array.h"
 #include "map.h"
 
-void
+static void
 print_map(CFWMap *map)
 {
 	cfw_map_iter_t iter;
@@ -57,55 +58,55 @@ print_map(CFWMap *map)
 int
 main()
 {
-	CFWString *s[3];
+	CFWRefPool *p;
 	CFWArray *a;
+	CFWString *s, *s2;
 	CFWMap *m;
 	size_t i;
 
-	s[0] = cfw_new(cfw_string, "Hallo");
-	s[1] = cfw_new(cfw_string, " Welt");
-	s[2] = cfw_new(cfw_string, "!");
+	p = cfw_new(cfw_refpool);
 
-	a = cfw_new(cfw_array, s[0], s[1], s[2], NULL);
+	a = cfw_new_p(cfw_array,
+	    cfw_new_p(cfw_string, "Hallo"),
+	    cfw_new_p(cfw_string, " Welt"),
+	    cfw_new_p(cfw_string, "!"), NULL);
 
-	cfw_unref(s[0]);
-	cfw_unref(s[1]);
-	cfw_unref(s[2]);
-
-	s[0] = cfw_new(cfw_string, NULL);
+	s = cfw_new(cfw_string, NULL);
 
 	for (i = 0; i < cfw_array_size(a); i++)
-		cfw_string_append(s[0], cfw_array_get(a, i));
+		cfw_string_append(s, cfw_array_get(a, i));
 
-	cfw_unref(a);
+	cfw_unref(p);
 
-	puts(cfw_string_c(s[0]));
+	puts(cfw_string_c(s));
 
-	s[1] = cfw_new(cfw_string, "ll");
-	printf("%zd\n", cfw_string_find(s[0], s[1], cfw_range_all));
-	cfw_unref(s[1]);
+	p = cfw_new(cfw_refpool);
+	s2 = cfw_new_p(cfw_string, "ll");
+	printf("%zd\n", cfw_string_find(s, s2, cfw_range_all));
 
-	cfw_unref(s[0]);
+	cfw_unref(p);
+	cfw_unref(s);
 
-	s[0] = cfw_new(cfw_string, "Hallo");
-	s[1] = cfw_new(cfw_string, "Welt!");
+	p = cfw_new(cfw_refpool);
 
-	m = cfw_new(cfw_map, s[0], s[1], NULL);
-	cfw_unref(s[1]);
-
-	print_map(m);
-
-	s[1] = cfw_new(cfw_string, "Test");
-	cfw_map_set(m, s[0], s[1]);
-	cfw_unref(s[1]);
+	m = cfw_new_p(cfw_map,
+	    cfw_new_p(cfw_string, "Hallo"),
+	    cfw_new_p(cfw_string, "Welt!"),
+	    cfw_new_p(cfw_string, "Test"),
+	    cfw_new_p(cfw_string, "success!"), NULL);
 
 	print_map(m);
 
-	cfw_map_set(m, s[0], NULL);
+	cfw_map_set(m,
+	    cfw_new_p(cfw_string, "Hallo"),
+	    cfw_new_p(cfw_string, "Test"));
+
 	print_map(m);
 
-	cfw_unref(s[0]);
-	cfw_unref(m);
+	cfw_map_set(m, cfw_new_p(cfw_string, "Hallo"), NULL);
+	print_map(m);
+
+	cfw_unref(p);
 
 	return 0;
 }

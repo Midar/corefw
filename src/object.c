@@ -25,8 +25,10 @@
  */
 
 #include <stdlib.h>
+#include <assert.h>
 
 #include "object.h"
+#include "refpool.h"
 
 void*
 cfw_new(CFWClass *class, ...)
@@ -49,6 +51,39 @@ cfw_new(CFWClass *class, ...)
 		}
 
 		va_end(args);
+	}
+
+	return obj;
+}
+
+void*
+cfw_new_p(CFWClass *class, ...)
+{
+	CFWObject *obj;
+
+	assert(class != cfw_refpool);
+
+	if ((obj = malloc(class->size)) == NULL)
+		return NULL;
+
+	obj->cls = class;
+	obj->ref_cnt = 1;
+
+	if (class->ctor != NULL) {
+		va_list args;
+		va_start(args, class);
+
+		if (!class->ctor(obj, args)) {
+			cfw_unref(obj);
+			return NULL;
+		}
+
+		va_end(args);
+	}
+
+	if (!cfw_refpool_add(obj)) {
+		cfw_unref(obj);
+		return NULL;
 	}
 
 	return obj;

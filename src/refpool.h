@@ -24,24 +24,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __COREFW_OBJECT_H__
-#define __COREFW_OBJECT_H__
+#ifndef __COREFW_REFPOOL_H__
+#define __COREFW_REFPOOL_H__
 
 #include "class.h"
 
-typedef struct CFWObject {
-	CFWClass *cls;
-	int ref_cnt;
-} CFWObject;
-
-extern CFWClass *cfw_object;
-extern void* cfw_new(CFWClass*, ...);
-extern void* cfw_new_p(CFWClass*, ...);
-extern void* cfw_ref(void*);
-extern void cfw_unref(void*);
-extern void cfw_free(void*);
-extern bool cfw_equal(void*, void*);
-extern uint32_t cfw_hash(void*);
-extern void* cfw_copy(void*);
+typedef struct CFWRefPool CFWRefPool;
+extern CFWClass *cfw_refpool;
+extern bool cfw_refpool_add(void*);
 
 #endif
