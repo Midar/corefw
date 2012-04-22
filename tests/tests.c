@@ -43,11 +43,9 @@ print_map(CFWMap *map)
 	fputs("{\n", stdout);
 
 	while (iter.key != NULL) {
-		if (iter.obj != NULL)
-			printf("\t%s = %s\n", cfw_string_c(iter.key),
-			    cfw_string_c(iter.obj));
-		else
-			printf("\t%s = NULL\n", cfw_string_c(iter.key));
+		printf("\t%s = %s\n",
+		    cfw_string_c(iter.key),
+		    cfw_string_c(iter.obj));
 
 		cfw_map_iter_next(&iter);
 	}
