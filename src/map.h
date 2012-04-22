@@ -24,66 +24,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdio.h>
+#ifndef __COREFW_MAP_H__
+#define __COREFW_MAP_H__
 
-#include "object.h"
-#include "string.h"
-#include "array.h"
-#include "map.h"
+#include "class.h"
 
-int
-main()
-{
-	CFWString *s[3];
-	CFWArray *a;
-	CFWMap *m;
-	size_t i;
+typedef struct CFWMap CFWMap;
+extern CFWClass *cfw_map;
+extern size_t cfw_map_size(CFWMap*);
+extern void* cfw_map_get(CFWMap*, void*);
+extern bool cfw_map_set(CFWMap*, void*, void*);
 
-	s[0] = cfw_new(cfw_string, "Hallo");
-	s[1] = cfw_new(cfw_string, " Welt");
-	s[2] = cfw_new(cfw_string, "!");
-
-	a = cfw_new(cfw_array, s[0], s[1], s[2], NULL);
-
-	cfw_unref(s[0]);
-	cfw_unref(s[1]);
-	cfw_unref(s[2]);
-
-	s[0] = cfw_new(cfw_string, NULL);
-
-	for (i = 0; i < cfw_array_size(a); i++)
-		cfw_string_append(s[0], cfw_array_get(a, i));
-
-	cfw_unref(a);
-
-	puts(cfw_string_c(s[0]));
-
-	s[1] = cfw_new(cfw_string, "ll");
-	printf("%zd\n", cfw_string_find(s[0], s[1], cfw_range_all));
-	cfw_unref(s[1]);
-
-	cfw_unref(s[0]);
-
-	s[0] = cfw_new(cfw_string, "Hallo");
-	s[1] = cfw_new(cfw_string, "Welt!");
-
-	m = cfw_new(cfw_map, s[0], s[1], NULL);
-
-	cfw_unref(s[1]);
-
-	puts(cfw_string_c(cfw_map_get(m, s[0])));
-
-	s[1] = cfw_new(cfw_string, "Test");
-	cfw_map_set(m, s[0], s[1]);
-	cfw_unref(s[1]);
-
-	puts(cfw_string_c(cfw_map_get(m, s[0])));
-
-	cfw_map_set(m, s[0], NULL);
-	printf("%p\n", cfw_map_get(m, s[0]));
-
-	cfw_unref(s[0]);
-	cfw_unref(m);
-
-	return 0;
-}
+#endif
