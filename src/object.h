@@ -36,7 +36,7 @@ typedef struct CFWObject {
 
 extern CFWClass *cfw_object;
 extern void* cfw_new(CFWClass*, ...);
-extern void* cfw_new_p(CFWClass*, ...);
+extern void* cfw_create(CFWClass*, ...);
 extern void* cfw_ref(void*);
 extern void cfw_unref(void*);
 extern void cfw_free(void*);

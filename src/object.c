@@ -57,7 +57,7 @@ cfw_new(CFWClass *class, ...)
 }
 
 void*
-cfw_new_p(CFWClass *class, ...)
+cfw_create(CFWClass *class, ...)
 {
 	CFWObject *obj;
 
