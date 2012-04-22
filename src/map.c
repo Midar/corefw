@@ -358,10 +358,10 @@ cfw_map_set(CFWMap *map, void *key, void *obj)
 void
 cfw_map_iter(CFWMap *map, cfw_map_iter_t *iter)
 {
-	iter->key = NULL;
-	iter->obj = NULL;
 	iter->_map = map;
 	iter->_pos = 0;
+
+	cfw_map_iter_next(iter);
 }
 
 void
