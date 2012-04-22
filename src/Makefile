@@ -4,6 +4,7 @@ LIB_MINOR = 0
 
 SRCS = array.c		\
        class.c		\
+       int.c		\
        map.c		\
        object.c		\
        range.c		\

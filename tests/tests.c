@@ -29,6 +29,7 @@
 #include "object.h"
 #include "refpool.h"
 #include "string.h"
+#include "int.h"
 #include "array.h"
 #include "map.h"
 
@@ -42,9 +43,15 @@ print_map(CFWMap *map)
 	fputs("{\n", stdout);
 
 	while (iter.key != NULL) {
-		printf("\t%s = %s\n",
-		    cfw_string_c(iter.key),
-		    cfw_string_c(iter.obj));
+		if (cfw_is(iter.obj, cfw_string)) {
+			printf("\t%s = %s\n",
+			    cfw_string_c(iter.key),
+			    cfw_string_c(iter.obj));
+		} else if (cfw_is(iter.obj, cfw_int)) {
+			printf("\t%s = %jd\n",
+			    cfw_string_c(iter.key),
+			    cfw_int_value(iter.obj));
+		}
 
 		cfw_map_iter_next(&iter);
 	}
@@ -90,7 +97,9 @@ main()
 	    cfw_new_p(cfw_string, "Hallo"),
 	    cfw_new_p(cfw_string, "Welt!"),
 	    cfw_new_p(cfw_string, "Test"),
-	    cfw_new_p(cfw_string, "success!"), NULL);
+	    cfw_new_p(cfw_string, "success!"),
+	    cfw_new_p(cfw_string, "int"),
+	    cfw_new_p(cfw_int, INTMAX_C(1234)), NULL);
 
 	print_map(m);
 
