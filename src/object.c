@@ -120,6 +120,14 @@ cfw_free(void *ptr)
 }
 
 bool
+cfw_is(void *ptr, CFWClass *cls)
+{
+	CFWObject *obj = ptr;
+
+	return (obj->cls == cls);
+}
+
+bool
 cfw_equal(void *ptr1, void *ptr2)
 {
 	CFWObject *obj1 = ptr1, *obj2 = ptr2;
