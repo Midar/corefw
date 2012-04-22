@@ -119,6 +119,14 @@ cfw_free(void *ptr)
 	free(obj);
 }
 
+CFWClass*
+cfw_class(void *ptr)
+{
+	CFWObject *obj;
+
+	return obj->cls;
+}
+
 bool
 cfw_is(void *ptr, CFWClass *cls)
 {
