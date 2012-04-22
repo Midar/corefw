@@ -43,15 +43,12 @@ print_map(CFWMap *map)
 	fputs("{\n", stdout);
 
 	while (iter.key != NULL) {
-		if (cfw_is(iter.obj, cfw_string)) {
-			printf("\t%s = %s\n",
-			    cfw_string_c(iter.key),
-			    cfw_string_c(iter.obj));
-		} else if (cfw_is(iter.obj, cfw_int)) {
-			printf("\t%s = %jd\n",
-			    cfw_string_c(iter.key),
-			    cfw_int_value(iter.obj));
-		}
+		printf("\t%s = ", cfw_string_c(iter.key));
+
+		if (cfw_is(iter.obj, cfw_string))
+			printf("%s\n", cfw_string_c(iter.obj));
+		else if (cfw_is(iter.obj, cfw_int))
+			printf("%jd\n", cfw_int_value(iter.obj));
 
 		cfw_map_iter_next(&iter);
 	}
