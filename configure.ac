@@ -13,7 +13,7 @@ AC_PROG_INSTALL
 CFLAGS="$CFLAGS -Wall"
 
 AS_IF([test x"$GCC" = x"yes"], [
-	CFLAGS="$CFLAGS -Werror -pipe"
+	CFLAGS="$CFLAGS -Werror -pipe -std=c99 -pedantic"
 ])
 
 BUILDSYS_SHARED_LIB
