@@ -10,10 +10,8 @@ AC_PROG_RANLIB
 AC_PROG_LN_S
 AC_PROG_INSTALL
 
-CFLAGS="$CFLAGS -Wall"
-
 AS_IF([test x"$GCC" = x"yes"], [
-	CFLAGS="$CFLAGS -Werror -pipe -std=c99 -pedantic"
+	CFLAGS="$CFLAGS -Wall -Werror -pipe -std=c99 -pedantic"
 ])
 
 BUILDSYS_SHARED_LIB
