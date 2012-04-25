@@ -33,7 +33,7 @@
 static struct bucket {
 	CFWObject *key, *obj;
 	uint32_t hash;
-} deleted = {};
+} deleted = { NULL, NULL, 0 };
 
 struct CFWMap {
 	CFWObject obj;
