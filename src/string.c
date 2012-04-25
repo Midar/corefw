@@ -149,7 +149,7 @@ cfw_string_c(CFWString *str)
 }
 
 size_t
-cfw_string_len(CFWString *string)
+cfw_string_length(CFWString *string)
 {
 	return string->len;
 }
