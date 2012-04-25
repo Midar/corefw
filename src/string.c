@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <errno.h>
 
 #include "object.h"
 #include "string.h"
@@ -38,6 +39,25 @@ struct CFWString {
 	size_t len;
 };
 
+char*
+cfw_strdup(const char *s)
+{
+	char *copy;
+	size_t len;
+
+	len = strlen(s);
+
+	if ((copy = malloc(len + 1)) == NULL) {
+		errno = ENOMEM;
+		return NULL;
+	}
+
+	memcpy(copy, s, len);
+	copy[len] = 0;
+
+	return copy;
+}
+
 static bool
 ctor(void *ptr, va_list args)
 {
@@ -46,7 +66,7 @@ ctor(void *ptr, va_list args)
 
 	if (cstr != NULL) {
 		str->data = NULL;
-		if ((str->data = strdup(cstr)) == NULL)
+		if ((str->data = cfw_strdup(cstr)) == NULL)
 			return false;
 
 		str->len = strlen(cstr);
@@ -139,7 +159,7 @@ cfw_string_set(CFWString *str, const char *cstr)
 {
 	char *copy;
 
-	if ((copy = strdup(cstr)) == NULL)
+	if ((copy = cfw_strdup(cstr)) == NULL)
 		return false;
 
 	if (str->data != NULL)
