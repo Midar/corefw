@@ -122,7 +122,7 @@ cfw_free(void *ptr)
 CFWClass*
 cfw_class(void *ptr)
 {
-	CFWObject *obj;
+	CFWObject *obj = ptr;
 
 	return obj->cls;
 }
