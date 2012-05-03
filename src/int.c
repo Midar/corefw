@@ -42,6 +42,35 @@ ctor(void *ptr, va_list args)
 	return true;
 }
 
+static bool
+equal(void *ptr1, void *ptr2)
+{
+	CFWObject *obj2 = ptr2;
+	CFWInt *int1, *int2;
+
+	if (obj2->cls != cfw_int)
+		return false;
+
+	int1 = ptr1;
+	int2 = ptr2;
+
+	return (int1->value == int2->value);
+}
+
+static uint32_t
+hash(void *ptr)
+{
+	CFWInt *integer = ptr;
+
+	return (uint32_t)integer->value;
+}
+
+static void*
+copy(void *ptr)
+{
+	return cfw_ref(ptr);
+}
+
 intmax_t
 cfw_int_value(CFWInt *integer)
 {
@@ -51,6 +80,9 @@ cfw_int_value(CFWInt *integer)
 static CFWClass class = {
 	.name = "CFWInt",
 	.size = sizeof(CFWInt),
-	.ctor = ctor
+	.ctor = ctor,
+	.equal = equal,
+	.hash = hash,
+	.copy = copy
 };
 CFWClass *cfw_int = &class;
