@@ -3,6 +3,7 @@ LIB_MAJOR = 0
 LIB_MINOR = 0
 
 SRCS = array.c		\
+       box.c		\
        class.c		\
        int.c		\
        map.c		\
