@@ -3,6 +3,7 @@ LIB_MAJOR = 0
 LIB_MINOR = 0
 
 SRCS = array.c		\
+       bool.c		\
        box.c		\
        class.c		\
        double.c		\
