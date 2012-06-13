@@ -94,6 +94,9 @@ cfw_ref(void *ptr)
 {
 	CFWObject *obj = ptr;
 
+	if (obj == NULL)
+		return NULL;
+
 	obj->ref_cnt++;
 
 	return obj;
@@ -104,6 +107,9 @@ cfw_unref(void *ptr)
 {
 	CFWObject *obj = ptr;
 
+	if (obj == NULL)
+		return NULL;
+
 	if (--obj->ref_cnt == 0)
 		cfw_free(obj);
 }
@@ -112,6 +118,9 @@ void
 cfw_free(void *ptr)
 {
 	CFWObject *obj = ptr;
+
+	if (obj == NULL)
+		return NULL;
 
 	if (obj->cls->dtor != NULL)
 		obj->cls->dtor(obj);
@@ -124,6 +133,9 @@ cfw_class(void *ptr)
 {
 	CFWObject *obj = ptr;
 
+	if (obj == NULL)
+		return NULL;
+
 	return obj->cls;
 }
 
@@ -132,6 +144,9 @@ cfw_is(void *ptr, CFWClass *cls)
 {
 	CFWObject *obj = ptr;
 
+	if (obj == NULL || cls == NULL)
+		return false;
+
 	return (obj->cls == cls);
 }
 
@@ -139,6 +154,12 @@ bool
 cfw_equal(void *ptr1, void *ptr2)
 {
 	CFWObject *obj1 = ptr1, *obj2 = ptr2;
+
+	if (obj1 == obj2)
+		return true;
+
+	if (obj1 == NULL || obj2 == NULL)
+		return false;
 
 	if (obj1->cls->equal != NULL) {
 		return obj1->cls->equal(obj1, obj2);
@@ -151,6 +172,9 @@ cfw_hash(void *ptr)
 {
 	CFWObject *obj = ptr;
 
+	if (obj == NULL)
+		return 0;
+
 	if (obj->cls->hash != NULL)
 		return obj->cls->hash(obj);
 
@@ -161,6 +185,9 @@ void*
 cfw_copy(void *ptr)
 {
 	CFWObject *obj = ptr;
+
+	if (obj == NULL)
+		return NULL;
 
 	if (obj->cls->copy != NULL)
 		return obj->cls->copy(obj);
