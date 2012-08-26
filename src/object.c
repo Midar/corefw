@@ -108,7 +108,7 @@ cfw_unref(void *ptr)
 	CFWObject *obj = ptr;
 
 	if (obj == NULL)
-		return NULL;
+		return;
 
 	if (--obj->ref_cnt == 0)
 		cfw_free(obj);
@@ -120,7 +120,7 @@ cfw_free(void *ptr)
 	CFWObject *obj = ptr;
 
 	if (obj == NULL)
-		return NULL;
+		return;
 
 	if (obj->cls->dtor != NULL)
 		obj->cls->dtor(obj);
