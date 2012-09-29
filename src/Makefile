@@ -12,6 +12,7 @@ SRCS = array.c		\
        object.c		\
        range.c		\
        refpool.c	\
+       stream.c		\
        string.c
 
 INCLUDES = ${SRCS:.c=.h}	\
