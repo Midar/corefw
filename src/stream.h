@@ -47,6 +47,7 @@ typedef struct CFWStream {
 extern CFWClass *cfw_stream;
 extern ssize_t cfw_stream_read(void*, void*, size_t);
 extern bool cfw_stream_write(void*, const void*, size_t);
+extern bool cfw_stream_write_string(void*, const char*);
 extern bool cfw_stream_eof(void*);
 extern void cfw_stream_close(void*);
 #endif

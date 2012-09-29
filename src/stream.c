@@ -24,6 +24,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <string.h>
+
 #include "stream.h"
 
 static bool
@@ -66,6 +68,12 @@ cfw_stream_write(void *ptr, const void *buf, size_t len)
 		return false;
 
 	return stream->ops->write(stream, buf, len);
+}
+
+bool
+cfw_stream_write_string(void *ptr, const char *str)
+{
+	return cfw_stream_write(ptr, str, strlen(str));
 }
 
 bool
