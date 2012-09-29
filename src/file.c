@@ -25,6 +25,7 @@
  */
 
 #include <string.h>
+#include <limits.h>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -171,3 +172,40 @@ static CFWClass class = {
 	.dtor = dtor
 };
 CFWClass *cfw_file = &class;
+
+static CFWFile cfw_stdin_ = {
+	.stream = {
+		.obj = {
+			.cls = &class,
+			.ref_cnt = INT_MAX
+		},
+		.ops = &stream_ops
+	},
+	.fd = 0,
+	.eof = false
+};
+static CFWFile cfw_stdout_ = {
+	.stream = {
+		.obj = {
+			.cls = &class,
+			.ref_cnt = INT_MAX
+		},
+		.ops = &stream_ops
+	},
+	.fd = 1,
+	.eof = false
+};
+static CFWFile cfw_stderr_ = {
+	.stream = {
+		.obj = {
+			.cls = &class,
+			.ref_cnt = INT_MAX
+		},
+		.ops = &stream_ops
+	},
+	.fd = 2,
+	.eof = false
+};
+CFWFile *cfw_stdin = &cfw_stdin_;
+CFWFile *cfw_stdout = &cfw_stdout_;
+CFWFile *cfw_stderr = &cfw_stderr_;

@@ -33,4 +33,8 @@ typedef struct CFWFile CFWFile;
 
 extern CFWClass *cfw_file;
 
+extern CFWFile *cfw_stdin;
+extern CFWFile *cfw_stdout;
+extern CFWFile *cfw_stderr;
+
 #endif
