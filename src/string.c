@@ -180,17 +180,35 @@ bool
 cfw_string_set(CFWString *str, const char *cstr)
 {
 	char *copy;
+	size_t len;
 
-	if ((copy = cfw_strdup(cstr)) == NULL)
-		return false;
+	if (str != NULL) {
+		if ((copy = cfw_strdup(cstr)) == NULL)
+			return false;
+
+		len = strlen(copy);
+	} else {
+		copy = NULL;
+		len = 0;
+	}
 
 	if (str->data != NULL)
 		free(str->data);
 
 	str->data = copy;
-	str->len = strlen(copy);
+	str->len = len;
 
 	return true;
+}
+
+void
+cfw_string_set_nocopy(CFWString *str, char *cstr, size_t len)
+{
+	if (str->data != NULL)
+		free(str->data);
+
+	str->data = cstr;
+	str->len = len;
 }
 
 bool

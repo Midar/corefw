@@ -37,6 +37,7 @@ extern char* cfw_strndup(const char*, size_t);
 extern const char* cfw_string_c(CFWString*);
 extern size_t cfw_string_length(CFWString*);
 extern bool cfw_string_set(CFWString*, const char*);
+extern void cfw_string_set_nocopy(CFWString*, char*, size_t);
 extern bool cfw_string_append(CFWString*, CFWString*);
 extern size_t cfw_string_find(CFWString*, CFWString*, cfw_range_t);
 
