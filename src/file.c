@@ -24,7 +24,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdarg.h>
 #include <string.h>
 
 #include <fcntl.h>
@@ -129,7 +128,7 @@ file_close(void *ptr)
 	close(file->fd);
 }
 
-struct cfw_stream_ops stream_ops = {
+static struct cfw_stream_ops stream_ops = {
 	.read = file_read,
 	.write = file_write,
 	.eof = file_eof,

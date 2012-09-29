@@ -15,5 +15,6 @@
 #include "refpool.h"
 #include "stream.h"
 #include "string.h"
+#include "tcpsocket.h"
 
 #endif

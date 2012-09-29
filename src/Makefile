@@ -14,7 +14,8 @@ SRCS = array.c		\
        range.c		\
        refpool.c	\
        stream.c		\
-       string.c
+       string.c		\
+       tcpsocket.c
 
 INCLUDES = ${SRCS:.c=.h}	\
 	   corefw.h		\

@@ -24,76 +24,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "stream.h"
+#ifndef __COREFW_TCPSOCKET_H__
+#define __COREFW_TCPSOCKET_H__
 
-static bool
-ctor(void *ptr, va_list args)
-{
-	CFWStream *stream = ptr;
+typedef struct CFWTCPSocket CFWTCPSocket;
 
-	stream->ops = NULL;
+extern CFWClass *cfw_tcpsocket;
+extern bool cfw_tcpsocket_connect(CFWTCPSocket*, const char*, uint16_t);
 
-	return true;
-}
-
-static void
-dtor(void *ptr)
-{
-	cfw_stream_close(ptr);
-}
-
-ssize_t
-cfw_stream_read(void *ptr, void *buf, size_t len)
-{
-	CFWStream *stream = ptr;
-	ssize_t ret;
-
-	if (stream == NULL || stream->ops == NULL)
-		return -1;
-
-	if ((ret = stream->ops->read(stream, buf, len)) < -1)
-		ret = -1;
-
-	return ret;
-}
-
-bool
-cfw_stream_write(void *ptr, const void *buf, size_t len)
-{
-	CFWStream *stream = ptr;
-
-	if (stream == NULL || stream->ops == NULL)
-		return false;
-
-	return stream->ops->write(stream, buf, len);
-}
-
-bool
-cfw_stream_eof(void *ptr)
-{
-	CFWStream *stream = ptr;
-
-	if (stream == NULL || stream->ops == NULL)
-		return true;
-
-	return stream->ops->eof(stream);
-}
-
-void
-cfw_stream_close(void *ptr)
-{
-	CFWStream *stream = ptr;
-
-	if (stream == NULL || stream->ops == NULL)
-		return;
-
-	stream->ops->close(stream);
-}
-
-static CFWClass class = {
-	.name = "CFWStream",
-	.size = sizeof(CFWStream),
-	.ctor = ctor,
-	.dtor = dtor
-};
-CFWClass *cfw_stream = &class;
+#endif
