@@ -7,6 +7,7 @@ SRCS = array.c		\
        box.c		\
        class.c		\
        double.c		\
+       file.c		\
        int.c		\
        map.c		\
        object.c		\
