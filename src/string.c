@@ -58,6 +58,28 @@ cfw_strdup(const char *s)
 	return copy;
 }
 
+char*
+cfw_strndup(const char *s, size_t max)
+{
+	char *copy;
+	size_t len;
+
+	len = strlen(s);
+
+	if (len > max)
+		len = max;
+
+	if ((copy = malloc(len + 1)) == NULL) {
+		errno = ENOMEM;
+		return NULL;
+	}
+
+	memcpy(copy, s, len);
+	copy[len] = 0;
+
+	return copy;
+}
+
 static bool
 ctor(void *ptr, va_list args)
 {
