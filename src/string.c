@@ -39,6 +39,17 @@ struct CFWString {
 	size_t len;
 };
 
+size_t
+cfw_strnlen(const char *s, size_t max)
+{
+	size_t i = 0;
+
+	for (i = 0; i < max && *s != '\0'; s++)
+		i++;
+
+	return i;
+}
+
 char*
 cfw_strdup(const char *s)
 {
@@ -47,10 +58,8 @@ cfw_strdup(const char *s)
 
 	len = strlen(s);
 
-	if ((copy = malloc(len + 1)) == NULL) {
-		errno = ENOMEM;
+	if ((copy = malloc(len + 1)) == NULL)
 		return NULL;
-	}
 
 	memcpy(copy, s, len);
 	copy[len] = 0;
@@ -64,15 +73,10 @@ cfw_strndup(const char *s, size_t max)
 	char *copy;
 	size_t len;
 
-	len = strlen(s);
+	len = cfw_strnlen(s, max);
 
-	if (len > max)
-		len = max;
-
-	if ((copy = malloc(len + 1)) == NULL) {
-		errno = ENOMEM;
+	if ((copy = malloc(len + 1)) == NULL)
 		return NULL;
-	}
 
 	memcpy(copy, s, len);
 	copy[len] = 0;

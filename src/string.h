@@ -32,6 +32,7 @@
 
 typedef struct CFWString CFWString;
 extern CFWClass *cfw_string;
+extern size_t cfw_strnlen(const char*, size_t);
 extern char* cfw_strdup(const char*);
 extern char* cfw_strndup(const char*, size_t);
 extern const char* cfw_string_c(CFWString*);
