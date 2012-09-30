@@ -250,6 +250,30 @@ cfw_stream_write_string(void *ptr, const char *str)
 }
 
 bool
+cfw_stream_write_line(void *ptr, const char *str)
+{
+	char *tmp;
+	size_t len;
+
+	len = strlen(str);
+
+	if ((tmp = malloc(len + 2)) == NULL)
+		return false;
+
+	memcpy(tmp, str, len);
+	tmp[len] = '\n';
+	tmp[len + 1] = '\0';
+
+	if (!cfw_stream_write(ptr, tmp, len + 1)) {
+		free(tmp);
+		return false;
+	}
+
+	free(tmp);
+	return true;
+}
+
+bool
 cfw_stream_eof(void *ptr)
 {
 	CFWStream *stream = ptr;
