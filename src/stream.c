@@ -141,7 +141,7 @@ cfw_stream_read_line(void *ptr)
 		return NULL;
 
 	for (;;) {
-		if (stream->ops->eof(stream)) {
+		if (stream->ops->at_end(stream)) {
 			free(buf);
 
 			if (stream->cache == NULL)
@@ -274,7 +274,7 @@ cfw_stream_write_line(void *ptr, const char *str)
 }
 
 bool
-cfw_stream_eof(void *ptr)
+cfw_stream_at_end(void *ptr)
 {
 	CFWStream *stream = ptr;
 
@@ -284,7 +284,7 @@ cfw_stream_eof(void *ptr)
 	if (stream->cache != NULL)
 		return false;
 
-	return stream->ops->eof(stream);
+	return stream->ops->at_end(stream);
 }
 
 void

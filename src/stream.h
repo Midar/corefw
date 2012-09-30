@@ -36,7 +36,7 @@
 struct cfw_stream_ops {
 	ssize_t (*read)(void*, void*, size_t);
 	bool (*write)(void*, const void*, size_t);
-	bool (*eof)(void*);
+	bool (*at_end)(void*);
 	void (*close)(void*);
 };
 
@@ -53,6 +53,6 @@ extern CFWString* cfw_stream_read_line(void*);
 extern bool cfw_stream_write(void*, const void*, size_t);
 extern bool cfw_stream_write_string(void*, const char*);
 extern bool cfw_stream_write_line(void*, const char*);
-extern bool cfw_stream_eof(void*);
+extern bool cfw_stream_at_end(void*);
 extern void cfw_stream_close(void*);
 #endif

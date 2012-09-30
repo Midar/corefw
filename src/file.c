@@ -57,7 +57,7 @@
 struct CFWFile {
 	CFWStream stream;
 	int fd;
-	bool eof;
+	bool at_end;
 };
 
 static int
@@ -98,7 +98,7 @@ file_read(void *ptr, void *buf, size_t len)
 	ssize_t ret;
 
 	if ((ret = read(file->fd, buf, len)) == 0)
-		file->eof = true;
+		file->at_end = true;
 
 	return ret;
 }
@@ -116,11 +116,11 @@ file_write(void *ptr, const void *buf, size_t len)
 }
 
 static bool
-file_eof(void *ptr)
+file_at_end(void *ptr)
 {
 	CFWFile *file = ptr;
 
-	return file->eof;
+	return file->at_end;
 }
 
 static void
@@ -134,7 +134,7 @@ file_close(void *ptr)
 static struct cfw_stream_ops stream_ops = {
 	.read = file_read,
 	.write = file_write,
-	.eof = file_eof,
+	.at_end = file_at_end,
 	.close = file_close
 };
 
@@ -148,7 +148,7 @@ ctor(void *ptr, va_list args)
 
 	/* Make sure we have a valid file in case we error out */
 	cfw_stream->ctor(ptr, args);
-	file->eof = false;
+	file->at_end = false;
 
 	if ((flags = parse_mode(mode)) == -1)
 		return false;
@@ -184,7 +184,7 @@ static CFWFile cfw_stdin_ = {
 		.ops = &stream_ops
 	},
 	.fd = 0,
-	.eof = false
+	.at_end = false
 };
 static CFWFile cfw_stdout_ = {
 	.stream = {
@@ -195,7 +195,7 @@ static CFWFile cfw_stdout_ = {
 		.ops = &stream_ops
 	},
 	.fd = 1,
-	.eof = false
+	.at_end = false
 };
 static CFWFile cfw_stderr_ = {
 	.stream = {
@@ -206,7 +206,7 @@ static CFWFile cfw_stderr_ = {
 		.ops = &stream_ops
 	},
 	.fd = 2,
-	.eof = false
+	.at_end = false
 };
 CFWFile *cfw_stdin = &cfw_stdin_;
 CFWFile *cfw_stdout = &cfw_stdout_;

@@ -42,7 +42,7 @@
 struct CFWTCPSocket {
 	CFWStream stream;
 	int fd;
-	bool eof;
+	bool at_end;
 };
 
 static ssize_t
@@ -52,7 +52,7 @@ sock_read(void *ptr, void *buf, size_t len)
 	ssize_t ret;
 
 	if ((ret = recv(sock->fd, buf, len, 0)) == 0)
-		sock->eof = true;
+		sock->at_end = true;
 
 	return ret;
 }
@@ -70,11 +70,11 @@ sock_write(void *ptr, const void *buf, size_t len)
 }
 
 static bool
-sock_eof(void *ptr)
+sock_at_end(void *ptr)
 {
 	CFWTCPSocket *sock = ptr;
 
-	return sock->eof;
+	return sock->at_end;
 }
 
 static void
@@ -89,7 +89,7 @@ sock_close(void *ptr)
 static struct cfw_stream_ops stream_ops = {
 	.read = sock_read,
 	.write = sock_write,
-	.eof = sock_eof,
+	.at_end = sock_at_end,
 	.close = sock_close
 };
 
@@ -102,7 +102,7 @@ ctor(void *ptr, va_list args)
 
 	sock->fd = -1;
 	sock->stream.ops = &stream_ops;
-	sock->eof = false;
+	sock->at_end = false;
 
 	return true;
 }
