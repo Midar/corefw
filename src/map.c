@@ -341,8 +341,10 @@ cfw_map_set(CFWMap *map, void *key, void *obj)
 		if ((bucket = malloc(sizeof(*bucket))) == NULL)
 			return false;
 
-		if ((bucket->key = cfw_copy(key)) == NULL)
+		if ((bucket->key = cfw_copy(key)) == NULL) {
+			free(bucket);
 			return false;
+		}
 
 		bucket->obj = cfw_ref(obj);
 		bucket->hash = cfw_hash(key);
