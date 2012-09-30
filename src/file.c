@@ -144,8 +144,8 @@ ctor(void *ptr, va_list args)
 	const char *mode = va_arg(args, const char*);
 	int flags;
 
-	/* Make sure we have a valid pointer in case we error out */
-	file->stream.ops = NULL;
+	/* Make sure we have a valid file in case we error out */
+	cfw_stream->ctor(ptr, args);
 	file->eof = false;
 
 	if ((flags = parse_mode(mode)) == -1)
@@ -162,7 +162,7 @@ ctor(void *ptr, va_list args)
 static void
 dtor(void *ptr)
 {
-	cfw_stream_close(ptr);
+	cfw_stream->dtor(ptr);
 }
 
 static CFWClass class = {

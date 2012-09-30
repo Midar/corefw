@@ -96,6 +96,8 @@ ctor(void *ptr, va_list args)
 {
 	CFWTCPSocket *sock = ptr;
 
+	cfw_stream->ctor(ptr, args);
+
 	sock->fd = -1;
 	sock->stream.ops = &stream_ops;
 	sock->eof = false;
@@ -106,7 +108,7 @@ ctor(void *ptr, va_list args)
 static void
 dtor(void *ptr)
 {
-	cfw_stream_close(ptr);
+	cfw_stream->dtor(ptr);
 }
 
 bool

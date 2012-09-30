@@ -31,6 +31,7 @@
 
 #include "class.h"
 #include "object.h"
+#include "string.h"
 
 struct cfw_stream_ops {
 	ssize_t (*read)(void*, void*, size_t);
@@ -42,10 +43,13 @@ struct cfw_stream_ops {
 typedef struct CFWStream {
 	CFWObject obj;
 	struct cfw_stream_ops *ops;
+	char *cache;
+	size_t cache_len;
 } CFWStream;
 
 extern CFWClass *cfw_stream;
 extern ssize_t cfw_stream_read(void*, void*, size_t);
+extern CFWString* cfw_stream_read_line(void*);
 extern bool cfw_stream_write(void*, const void*, size_t);
 extern bool cfw_stream_write_string(void*, const char*);
 extern bool cfw_stream_eof(void*);
