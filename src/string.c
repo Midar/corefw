@@ -168,7 +168,7 @@ copy(void *ptr)
 	return new;
 }
 
-const char*
+char*
 cfw_string_c(CFWString *str)
 {
 	return str->data;
@@ -232,6 +232,64 @@ cfw_string_append(CFWString *str, CFWString *append)
 	return true;
 }
 
+bool
+cfw_string_append_c(CFWString *str, const char *append)
+{
+	size_t append_len = strlen(append);
+	char *new;
+
+	if ((new = realloc(str->data, str->len + append_len + 1)) == NULL)
+		return false;
+
+	memcpy(new + str->len, append, append_len);
+	new[str->len + append_len] = 0;
+
+	str->data = new;
+	str->len += append_len;
+
+	return true;
+}
+
+bool
+cfw_string_has_prefix(CFWString *str, CFWString *prefix)
+{
+	if (prefix->len > str->len)
+		return false;
+
+	return !memcmp(str->data, prefix->data, prefix->len);
+}
+
+bool
+cfw_string_has_prefix_c(CFWString *str, const char *prefix)
+{
+	size_t prefix_len = strlen(prefix);
+
+	if (prefix_len > str->len)
+		return false;
+
+	return !memcmp(str->data, prefix, prefix_len);
+}
+
+bool
+cfw_string_has_suffix(CFWString *str, CFWString *suffix)
+{
+	if (suffix->len > str->len)
+		return false;
+
+	return !memcmp(str->data, suffix->data, suffix->len);
+}
+
+bool
+cfw_string_has_suffix_c(CFWString *str, const char *suffix)
+{
+	size_t suffix_len = strlen(suffix);
+
+	if (suffix_len > str->len)
+		return false;
+
+	return !memcmp(str->data, suffix, suffix_len);
+}
+
 size_t
 cfw_string_find(CFWString *str, CFWString *substr, cfw_range_t range)
 {
@@ -249,6 +307,29 @@ cfw_string_find(CFWString *str, CFWString *substr, cfw_range_t range)
 	for (i = range.start; i <= range.start + range.length - substr->len;
 	    i++)
 		if (!memcmp(str->data + i, substr->data, substr->len))
+			return i;
+
+	return SIZE_MAX;
+}
+
+size_t
+cfw_string_find_c(CFWString *str, const char *substr, cfw_range_t range)
+{
+	size_t substr_len = strlen(substr);
+	size_t i;
+
+	if (range.start > str->len)
+		return SIZE_MAX;
+
+	if (range.length == SIZE_MAX)
+		range.length = str->len - range.start;
+
+	if (range.start + range.length > str->len || substr_len > range.length)
+		return SIZE_MAX;
+
+	for (i = range.start; i <= range.start + range.length - substr_len;
+	    i++)
+		if (!memcmp(str->data + i, substr, substr_len))
 			return i;
 
 	return SIZE_MAX;
