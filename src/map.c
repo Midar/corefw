@@ -29,6 +29,7 @@
 #include "object.h"
 #include "map.h"
 #include "hash.h"
+#include "string.h"
 
 static struct bucket {
 	CFWObject *key, *obj;
@@ -252,6 +253,22 @@ cfw_map_get(CFWMap *map, void *key)
 	return NULL;
 }
 
+void*
+cfw_map_get_c(CFWMap *map, const char *key)
+{
+	CFWString *str;
+	void *ret;
+
+	if ((str = cfw_new(cfw_string, key)) == NULL)
+		return NULL;
+
+	ret = cfw_map_get(map, str);
+
+	cfw_unref(str);
+
+	return ret;
+}
+
 bool
 cfw_map_set(CFWMap *map, void *key, void *obj)
 {
@@ -354,6 +371,22 @@ cfw_map_set(CFWMap *map, void *key, void *obj)
 	}
 
 	return true;
+}
+
+bool
+cfw_map_set_c(CFWMap *map, const char *key, void *obj)
+{
+	CFWString *str;
+	bool ret;
+
+	if ((str = cfw_new(cfw_string, key)) == NULL)
+		return false;
+
+	ret = cfw_map_set(map, str, obj);
+
+	cfw_unref(str);
+
+	return ret;
 }
 
 void
