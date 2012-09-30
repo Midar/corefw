@@ -220,6 +220,9 @@ cfw_string_append(CFWString *str, CFWString *append)
 {
 	char *new;
 
+	if (append == NULL)
+		return true;
+
 	if ((new = realloc(str->data, str->len + append->len + 1)) == NULL)
 		return false;
 
@@ -235,8 +238,13 @@ cfw_string_append(CFWString *str, CFWString *append)
 bool
 cfw_string_append_c(CFWString *str, const char *append)
 {
-	size_t append_len = strlen(append);
 	char *new;
+	size_t append_len;
+
+	if (append == NULL)
+		return true;
+
+	append_len = strlen(append);
 
 	if ((new = realloc(str->data, str->len + append_len + 1)) == NULL)
 		return false;

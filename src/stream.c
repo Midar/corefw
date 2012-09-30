@@ -120,7 +120,7 @@ cfw_stream_read_line(void *ptr)
 				}
 				cfw_string_set_nocopy(ret, ret_str, ret_len);
 
-				if (stream->cache_len - i - 1 > 0) {
+				if (stream->cache_len > i + 1) {
 					if ((new_cache = malloc(
 					    stream->cache_len - i - 1)) == NULL)
 						return NULL;
@@ -207,7 +207,7 @@ cfw_stream_read_line(void *ptr)
 				}
 				cfw_string_set_nocopy(ret, ret_str, ret_len);
 
-				if (buf_len - i - 1 > 0) {
+				if (buf_len > i + 1) {
 					new_cache = malloc(buf_len - i - 1);
 					if (new_cache == NULL) {
 						free(buf);
