@@ -76,6 +76,9 @@ dtor(void *ptr)
 		free(pool->data);
 
 	top = pool->prev;
+
+	if (top != NULL)
+		top->next = NULL;
 }
 
 bool
