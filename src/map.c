@@ -69,6 +69,7 @@ dtor(void *ptr)
 		if (map->data[i] != NULL && map->data[i] != &deleted) {
 			cfw_unref(map->data[i]->key);
 			cfw_unref(map->data[i]->obj);
+			free(map->data[i]);
 		}
 	}
 
