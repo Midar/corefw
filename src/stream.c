@@ -120,11 +120,14 @@ cfw_stream_read_line(void *ptr)
 				}
 				cfw_string_set_nocopy(ret, ret_str, ret_len);
 
-				new_cache = malloc(stream->cache_len - i - 1);
-				if (new_cache == NULL)
-					return NULL;
-				memcpy(new_cache, stream->cache + i + 1,
-				    stream->cache_len - i - 1);
+				if (stream->cache_len - i - 1 > 0) {
+					if ((new_cache = malloc(
+					    stream->cache_len - i - 1)) == NULL)
+						return NULL;
+					memcpy(new_cache, stream->cache + i + 1,
+					    stream->cache_len - i - 1);
+				} else
+					new_cache = cfw_strdup("");
 
 				free(stream->cache);
 				stream->cache = new_cache;
@@ -204,12 +207,16 @@ cfw_stream_read_line(void *ptr)
 				}
 				cfw_string_set_nocopy(ret, ret_str, ret_len);
 
-				new_cache = malloc(buf_len - i - 1);
-				if (new_cache == NULL) {
-					free(buf);
-					return NULL;
-				}
-				memcpy(new_cache, buf + i + 1, buf_len - i - 1);
+				if (buf_len - i - 1 > 0) {
+					new_cache = malloc(buf_len - i - 1);
+					if (new_cache == NULL) {
+						free(buf);
+						return NULL;
+					}
+					memcpy(new_cache, buf + i + 1,
+					    buf_len - i - 1);
+				} else
+					new_cache = cfw_strdup("");
 
 				free(stream->cache);
 				stream->cache = new_cache;
@@ -221,12 +228,19 @@ cfw_stream_read_line(void *ptr)
 		}
 
 		/* There was no newline or \0 */
-		new_cache = realloc(stream->cache, stream->cache_len + buf_len);
-		if (new_cache == NULL) {
-			free(buf);
-			return NULL;
+		if (stream->cache_len + buf_len > 0) {
+			new_cache = realloc(stream->cache,
+			    stream->cache_len + buf_len);
+			if (new_cache == NULL) {
+				free(buf);
+				return NULL;
+			}
+			memcpy(new_cache + stream->cache_len, buf, buf_len);
+		} else {
+			free(stream->cache);
+			new_cache = cfw_strdup("");
 		}
-		memcpy(new_cache + stream->cache_len, buf, buf_len);
+
 		stream->cache = new_cache;
 		stream->cache_len += buf_len;
 	}
