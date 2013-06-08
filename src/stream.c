@@ -113,7 +113,7 @@ cfw_stream_read_line(void *ptr)
 				if (ret_str == NULL)
 					return NULL;
 
-				ret = cfw_create(cfw_string, NULL);
+				ret = cfw_create(cfw_string, (void*)NULL);
 				if (ret == NULL) {
 					free(ret_str);
 					return NULL;
@@ -159,7 +159,7 @@ cfw_stream_read_line(void *ptr)
 			if (ret_str == NULL)
 				return NULL;
 
-			ret = cfw_create(cfw_string, NULL);
+			ret = cfw_create(cfw_string, (void*)NULL);
 			if (ret == NULL) {
 				free(ret_str);
 				return NULL;
@@ -199,7 +199,7 @@ cfw_stream_read_line(void *ptr)
 					ret_len--;
 				ret_str[ret_len] = '\0';
 
-				ret = cfw_create(cfw_string, NULL);
+				ret = cfw_create(cfw_string, (void*)NULL);
 				if (ret == NULL) {
 					free(buf);
 					free(ret_str);

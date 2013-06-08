@@ -126,7 +126,7 @@ copy(void *ptr)
 	CFWMap *new;
 	uint32_t i;
 
-	if ((new = cfw_new(cfw_map, NULL)) == NULL)
+	if ((new = cfw_new(cfw_map, (void*)NULL)) == NULL)
 		return NULL;
 
 	if ((new->data = malloc(sizeof(*new->data) * map->size)) == NULL)

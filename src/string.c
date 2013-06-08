@@ -154,7 +154,7 @@ copy(void *ptr)
 	CFWString *str = ptr;
 	CFWString *new;
 
-	if ((new = cfw_new(cfw_string, NULL)) == NULL)
+	if ((new = cfw_new(cfw_string, (void*)NULL)) == NULL)
 		return NULL;
 
 	if ((new->data = malloc(str->len + 1)) == NULL) {

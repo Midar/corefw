@@ -113,7 +113,7 @@ copy(void *ptr)
 	CFWArray *new;
 	size_t i;
 
-	if ((new = cfw_new(cfw_array, NULL)) == NULL)
+	if ((new = cfw_new(cfw_array, (void*)NULL)) == NULL)
 		return NULL;
 
 	if ((new->data = malloc(sizeof(void*) * array->size)) == NULL) {

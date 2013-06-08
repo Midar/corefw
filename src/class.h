@@ -35,7 +35,7 @@
 typedef struct CFWClass {
 	const char *name;
 	size_t size;
-	bool (*ctor)(void*, va_list args);
+	bool (*ctor)(void*, va_list);
 	void (*dtor)(void*);
 	bool (*equal)(void*, void*);
 	uint32_t (*hash)(void*);
