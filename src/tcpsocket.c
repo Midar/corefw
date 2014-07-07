@@ -24,6 +24,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define _C99_SOURCE
 #define _POSIX_SOURCE
 
 #include <stdio.h>

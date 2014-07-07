@@ -61,8 +61,7 @@ cfw_strdup(const char *s)
 	if ((copy = malloc(len + 1)) == NULL)
 		return NULL;
 
-	memcpy(copy, s, len);
-	copy[len] = 0;
+	memcpy(copy, s, len + 1);
 
 	return copy;
 }

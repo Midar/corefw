@@ -70,9 +70,9 @@ main()
 	array = cfw_create(cfw_array,
 	    cfw_create(cfw_string, "Hallo"),
 	    cfw_create(cfw_string, " Welt"),
-	    cfw_create(cfw_string, "!"), NULL);
+	    cfw_create(cfw_string, "!"), (void*)NULL);
 
-	str = cfw_new(cfw_string, NULL);
+	str = cfw_new(cfw_string, (void*)NULL);
 
 	for (i = 0; i < cfw_array_size(array); i++)
 		cfw_string_append(str, cfw_array_get(array, i));
